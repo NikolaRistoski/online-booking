@@ -15,13 +15,12 @@ const { Header, Footer, Content } = Layout;
 function App() {
   return (
 
-    <Layout style={{padding:"0 25rem"}}>
+    <Layout style={{ padding: "0 25rem" }}>
       <Row>
         <Col span={24}>
           <Content>
             <Filter />
           </Content>
-          <Footer><FooterComponent /></Footer>
         </Col>
       </Row>
     </Layout>

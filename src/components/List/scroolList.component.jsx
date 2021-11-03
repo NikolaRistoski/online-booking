@@ -16,7 +16,6 @@ const ScroolList = ({ data }) => {
             <InfiniteScroll
                 dataLength={data.length}
                 loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                 scrollableTarget="scrollableDiv"
             >
                 <List
@@ -26,7 +25,10 @@ const ScroolList = ({ data }) => {
                             <List.Item.Meta
                                 title={item.name}
                             />
-                            <div>{item.rdmValue}</div>
+                            <div style={{
+                                color: '#54b2d3',
+                                fontWeight: 'bold'
+                            }}>{item.rdmValue}</div>
 
                         </List.Item>
                     )}

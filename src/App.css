@@ -1,5 +1,28 @@
-.icon-card:active{
-  border: 1px solid #54b2d3;
-      -webkit-box-shadow: 0 0 4px #a6dcef;
-      box-shadow: 0 0 4px #a6dcef;
+.ant-card-body {
+  padding: 0;
+}
+
+.ant-card-meta-title {
+  font-size: 14px;
+  color: #6f5f67;
+}
+
+.ant-list-item-meta-title {
+  color: #6f5f67;
+}
+
+.ant-list-split .ant-list-item {
+  border: 1px solid #ecedf0;
+  margin: 10px; 
+}
+
+.ant-list-item {
+  padding: 10px 20px;
+  border: 1px solid #ecedf0 !important;
+}
+
+.ant-list-item:hover {
+  cursor: pointer;
+  border: 1px solid #54b2d3 !important;
+  color: #54b2d3 !important;
 }
