@@ -1,0 +1,5 @@
+.icon-card:active{
+  border: 1px solid #54b2d3;
+      -webkit-box-shadow: 0 0 4px #a6dcef;
+      box-shadow: 0 0 4px #a6dcef;
+}
