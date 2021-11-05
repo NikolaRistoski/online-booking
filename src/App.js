@@ -1,15 +1,13 @@
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 import './App.css';
-import HeaderComponent from './components/Header/header.component';
 
 //Ant design
 import { Row, Col } from 'antd';
 import { Layout } from 'antd';
-import FooterComponent from './components/Footer/footer.component';
-import Filter from './components/FIlter/filter.component';
+import MasterCategory from './components/MasterCategory/master.component';
 
-const { Header, Footer, Content } = Layout;
+const { Content } = Layout;
 
 
 function App() {
@@ -19,7 +17,7 @@ function App() {
       <Row>
         <Col span={24}>
           <Content>
-            <Filter />
+            <MasterCategory />
           </Content>
         </Col>
       </Row>

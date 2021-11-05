@@ -26,3 +26,37 @@
   border: 1px solid #54b2d3 !important;
   color: #54b2d3 !important;
 }
+#scrollableDiv{
+  border: none !important;
+}
+.active-element{
+  border-color: #40a9ff !important;
+}
+.on-hover:hover{
+  border-color: #40a9ff;
+}
+.card-name{
+  font-size: 20px;
+  line-height: 24px;
+  color: #3d3d46;
+  margin-right: 5px;
+}
+.price{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #65cd98;
+    text-align: right;
+}
+.review-span{
+  font-size: 16px;
+    line-height: 20px;
+    color: #737387;
+    margin-left: 13px
+}
+
+.time{
+  font-size: 16px;
+    line-height: 20px;
+    color: #737387;
+}
