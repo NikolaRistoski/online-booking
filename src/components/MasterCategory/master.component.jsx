@@ -27,6 +27,7 @@ const styleTwo = {
 }
 
 
+
 const MasterCategory = () => {
     // State for active element name
     const [activeElement, setActiveElement] = useState("")

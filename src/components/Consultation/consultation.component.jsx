@@ -78,14 +78,14 @@ const Consultation = ({ allData }) => {
                 {
                     isCategoryVirtualAvaliable ? <>
                         <Col span={12}>
-                            <Button type="secondary" icon={<MedicineBoxOutlined />} size="large" style={{ width: "100%" }} onClick={() => handleClinic()}
+                            <Button type="secondary" icon={<MedicineBoxOutlined />} size="large" style={{ width: "100%", color: '#737387' }} onClick={() => handleClinic()}
                                 className={isClinic ? 'active-element' : ''}
                             >
                                 In clinic
                             </Button>
                         </Col>
                         <Col span={12}>
-                            <Button type="secondary" icon={<LaptopOutlined />} size="large" style={{ width: "100%" }} onClick={() => handleOnline()}
+                            <Button type="secondary" icon={<LaptopOutlined />} size="large" style={{ width: "100%", color: '#737387' }} onClick={() => handleOnline()}
                                 className={isOnline ? 'active-element' : ''}
 
                             >

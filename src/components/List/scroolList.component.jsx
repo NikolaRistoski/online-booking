@@ -7,6 +7,7 @@ import Consultation from '../Consultation/consultation.component';
 import { useState, useEffect } from 'react';
 
 const ScroolList = ({ data }) => {
+    
     const [allData, setAllData] = useState([])
 
     const [selectedCategory, setSelectedCategory] = useState('')
@@ -36,7 +37,7 @@ const ScroolList = ({ data }) => {
 
     return (
         <>
-            <Row>
+            <Row >
                 <Col span={10}>
                     <div
                         id="scrollableDiv"
@@ -76,7 +77,8 @@ const ScroolList = ({ data }) => {
                         </InfiniteScroll>
                     </div>
                 </Col>
-                <Col span={14}>
+
+                <Col span={13}>
                     <Consultation allData={allData} />
                 </Col>
             </Row>

@@ -30,7 +30,9 @@
   border: none !important;
 }
 .active-element{
-  border-color: #40a9ff !important;
+  border: 1px solid #54b2d3;
+  color: #54b2d3 !important;
+  box-shadow: 0 0 4px #a6dcef;
 }
 .on-hover:hover{
   border-color: #40a9ff;
