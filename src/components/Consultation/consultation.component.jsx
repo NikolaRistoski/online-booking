@@ -11,7 +11,7 @@ const style = {
 };
 
 const Consultation = ({ allData }) => {
-    // State that keep the date for in clinic and online services
+    // State that keep the data for in clinic and online services
     const [inClinic, setInClinic] = useState([])
     const [online, setOnline] = useState([])
 
