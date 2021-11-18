@@ -22,33 +22,12 @@ const ScroolList = ({ data }) => {
 
   // Get consultation data
   const getConsultationData = (categoryName) => {
-    console.log("servicesData", servicesData.categories);
-
-    return servicesData.categories.map(category =>{
-        if(category.name === categoryName){
-             setSelectedCategory(category.name)
-             setAllData(category.services)
-
-            //  if (item.allData === undefined) {
-            //     setAllData(item.subCategory)
-            // } else {
-            //     setAllData(item.allData.subCategory)
-            // }
-        }
-    })
-
-
-    // return data.map((item) => {
-    //   if (item.name === categoryName) {
-    //       setSelectedCategory(item.name)
-
-    //       if (item.allData === undefined) {
-    //           setAllData(item.subCategory)
-    //       } else {
-    //           setAllData(item.allData.subCategory)
-    //       }
-    //   }
-    // });
+    return servicesData.categories.map((category) => {
+      if (category.name === categoryName) {
+        setSelectedCategory(category.name);
+        setAllData(category.services);
+      }
+    });
   };
 
   useEffect(() => {
@@ -87,7 +66,6 @@ const ScroolList = ({ data }) => {
                     style={{ width: "100%", marginBottom: "10px" }}
                     onClick={() => {
                       getConsultationData(item.name);
-                      // console.log('item name is: ', item.name)
                     }}
                     className={
                       item.name === selectedCategory ? "active-element" : ""

@@ -1,8 +1,4 @@
 import { useState, useEffect } from "react";
-
-// Data
-import { defaultItems } from "../../data/data.js";
-
 // nmp package for scrollable and design list
 import ScroolList from "../List/scroolList.component";
 
@@ -54,26 +50,12 @@ const MasterCategory = () => {
   // Get all categories
   const renderAllCategories = () => {
     const array = [];
-    // console.log(allDataData);
     allDataData.master_categories.map((master) => {
       master.categories.map((category) => {
         return array.push({
           name: category.name,
         });
       });
-
-      //   return category.services.map((item) => {
-
-      //   });
-
-      //   return item.category.map((category) =>
-      //     array.push({
-      //       itemName: item.name,
-      //       name: category.name,
-      //       rdmValue: category.rdmValue,
-      //       subCategory: category.subCategory,
-      //     })
-      //   );
     });
     setCategoryName(array);
   };
@@ -82,11 +64,10 @@ const MasterCategory = () => {
   const filterItems = (categoryName) => {
     const array = [];
 
-    defaultItems.filter((item) => {
+    allDataData.master_categories.filter((item) => {
       if (item.name === categoryName) {
-        item.category.map((item) =>
+        item.categories.map((item) =>
           array.push({
-            allData: item,
             name: item.name,
           })
         );
