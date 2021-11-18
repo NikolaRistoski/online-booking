@@ -1,158 +1,189 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Data
-import { defaultItems } from '../../data/data.js';
+import { defaultItems } from "../../data/data.js";
 
-// nmp package for scrollable and design list 
-import ScroolList from '../List/scroolList.component'
+// nmp package for scrollable and design list
+import ScroolList from "../List/scroolList.component";
 
 // ant design
-import { Row, Col } from 'antd';
-import { AppstoreOutlined, CreditCardOutlined } from '@ant-design/icons';
-import { Card } from 'antd';
+import { Row, Col } from "antd";
+import { AppstoreOutlined, CreditCardOutlined } from "@ant-design/icons";
+import { Card } from "antd";
 
+// GraphQL Query
+import { useQuery } from "@apollo/client";
+import { GET_ALL_MASTER_CATEGORIES } from "../../GraphQL/Queries.js";
 
 const { Meta } = Card;
 
 const style = {
-    padding: '24px',
-    background: '#ffffff',
-    textAlign: 'center'
+  padding: "24px",
+  background: "#ffffff",
+  textAlign: "center",
 };
 
 const styleTwo = {
-    padding: '24px 10px',
-    margin: '24px auto',
-    background: '#ffffff',
-}
-
-
+  padding: "24px 10px",
+  margin: "24px auto",
+  background: "#ffffff",
+};
 
 const MasterCategory = () => {
-    // State for active element name
-    const [activeElement, setActiveElement] = useState("")
+  const { loading, error, data } = useQuery(GET_ALL_MASTER_CATEGORIES);
 
-    // Change elements className if isActive... is true
-    const [isActiveAll, setIsActiveAll] = useState(false)
-    const [isActiveOthers, setIsActiveOthers] = useState(false)
-    const [isActiveVaucher, setIsActiveVaucher] = useState(false)
+  // State for active element name
+  const [activeElement, setActiveElement] = useState("");
 
-    const [categoryName, setCategoryName] = useState([]);
+  // Change elements className if isActive... is true
+  const [isActiveAll, setIsActiveAll] = useState(false);
+  const [isActiveOthers, setIsActiveOthers] = useState(false);
+  const [isActiveVaucher, setIsActiveVaucher] = useState(false);
 
-    // Get all categories
-    const renderAllCategories = () => {
-        const array = []
+  const [categoryName, setCategoryName] = useState([]);
 
-        defaultItems.map((item) => {
-            return item.category.map(category => array.push({
-                itemName: item.name,
-                name: category.name,
-                rdmValue: category.rdmValue,
-                subCategory: category.subCategory
-            }))
+  // Get all categories
+  const renderAllCategories = () => {
+    const array = [];
+
+    defaultItems.map((item) => {
+      return item.category.map((category) =>
+        array.push({
+          itemName: item.name,
+          name: category.name,
+          rdmValue: category.rdmValue,
+          subCategory: category.subCategory,
         })
-        setCategoryName(array)
-    }
+      );
+    });
+    setCategoryName(array);
+  };
 
-    //  Get filtered categories by category name
-    const filterItems = (categoryName) => {
-        const array = []
+  //  Get filtered categories by category name
+  const filterItems = (categoryName) => {
+    const array = [];
 
-        defaultItems.filter(item => {
-            if (item.name === categoryName) {
-                item.category.map(item => array.push({
-                    allData: item,
-                    name: item.name
-                }))
-            }
-        })
-        setCategoryName(array)
-    }
+    defaultItems.filter((item) => {
+      if (item.name === categoryName) {
+        item.category.map((item) =>
+          array.push({
+            allData: item,
+            name: item.name,
+          })
+        );
+      }
+    });
+    setCategoryName(array);
+  };
 
-    useEffect(() => {
-        renderAllCategories()
-        setActiveElement('All')
-    }, [])
+  useEffect(() => {
+    renderAllCategories();
+    setActiveElement("All");
+  }, []);
 
+  if (loading) return "Loading";
+  if (data)
     return (
-        <div>
-            <Row style={style}>
-                {/* All Categories */}
-                <Col span={3} onClick={() => {
+      <div>
+        <Row style={style}>
+          {/* All Categories */}
+          <Col
+            span={3}
+            onClick={() => {
+              setActiveElement("All");
 
-                    setActiveElement('All')
+              renderAllCategories();
 
-                    renderAllCategories()
-
-                    setIsActiveAll(true)
-                    setIsActiveOthers(false)
-                    setIsActiveVaucher(false)
+              setIsActiveAll(true);
+              setIsActiveOthers(false);
+              setIsActiveVaucher(false);
+            }}
+          >
+            <Card
+              hoverable
+              style={{ width: 100, fontSize: 40, padding: "15px 0" }}
+              cover={<AppstoreOutlined />}
+              className={activeElement === "All" ? "active-element" : ""}
+            >
+              <Meta
+                title="All"
+                style={{
+                  padding: "10px 0",
                 }}
+              />
+            </Card>
+          </Col>
+
+          {/* Render Injectables, Face, Spa, Dematology, Acne treatment, and Hydrafacial categories */}
+          {data.master_categories.map((item) => {
+            return (
+              <Col
+                key={item.id}
+                span={3}
+                onClick={() => {
+                  setActiveElement(item.name);
+                  filterItems(item.name);
+
+                  setIsActiveAll(false);
+                  setIsActiveOthers(true);
+                  setIsActiveVaucher(false);
+                }}
+              >
+                <Card
+                  hoverable
+                  style={{ width: 100, padding: "15px 0" }}
+                  cover={
+                      <img src={item.image} alt={item.name} style={{
+                          width: '40px',
+                          heigh: '40px',
+                          margin: '0 auto'
+                      }}/>
+                  }
+                  className={
+                    activeElement === item.name && isActiveOthers
+                      ? "active-element"
+                      : ""
+                  }
                 >
-                    <Card
-                        hoverable
-                        style={{ width: 100, fontSize: 40, padding: '15px 0' }}
-                        cover={<AppstoreOutlined />}
-                        className={activeElement === 'All' ? 'active-element' : ""}
-                    >
-                        <Meta title="All" style={{
-                            padding: "10px 0"
-                        }} />
-                    </Card>
-                </Col>
+                  <Meta
+                    title={item.name}
+                    style={{
+                      padding: "10px 0",
+                    }}
+                  />
+                </Card>
+              </Col>
+            );
+          })}
 
-                {/* Render Injectables, Face, Spa, Dematology, Acne treatment, and Hydrafacial categories */}
-                {
-                    defaultItems.map((item) => {
-                        return (
-                            <Col key={item.key} span={3} onClick={() => {
-                                setActiveElement(item.name)
-                                filterItems(item.name)
+          {/* Voucher Category */}
+          <Col span={3}>
+            <Card
+              hoverable
+              style={{ width: 100, fontSize: 40, padding: "15px 0" }}
+              cover={<CreditCardOutlined />}
+              className={isActiveVaucher ? "active-element" : ""}
+            >
+              <Meta
+                title="Voucher"
+                style={{
+                  padding: "10px 0",
+                }}
+              />
+            </Card>
+          </Col>
+        </Row>
 
-                                setIsActiveAll(false)
-                                setIsActiveOthers(true)
-                                setIsActiveVaucher(false)
-                            }}>
-                                <Card
-                                    hoverable
-                                    style={{ width: 100, padding: '15px 0' }}
-                                    cover={<item.icon />}
-                                    className={activeElement === item.name && isActiveOthers ? 'active-element' : ""}
-                                >
-                                    <Meta title={item.name} style={{
-                                        padding: "10px 0",
-                                    }} />
-                                </Card>
-                            </Col>
-                        )
-                    })
-                }
-
-                {/* Voucher Category */}
-                <Col span={3}>
-                    <Card
-                        hoverable
-                        style={{ width: 100, fontSize: 40, padding: '15px 0' }}
-                        cover={<CreditCardOutlined />}
-                        className={isActiveVaucher ? 'active-element' : ""}
-                    >
-                        <Meta title="Voucher" style={{
-                            padding: "10px 0"
-                        }} />
-                    </Card>
-                </Col>
-            </Row>
-
-            {/* ScroolList component renders all categories depending of master category */}
-            <Row gutter={16}>
-                <Col span={24}>
-                    <div style={styleTwo}>
-                        <ScroolList data={categoryName} />
-                    </div>
-                </Col>
-            </Row>
-        </div>
-    )
-}
+        {/* ScroolList component renders all categories depending of master category */}
+        <Row gutter={16}>
+          <Col span={24}>
+            <div style={styleTwo}>
+              <ScroolList data={categoryName} />
+            </div>
+          </Col>
+        </Row>
+      </div>
+    );
+};
 
 export default MasterCategory;
