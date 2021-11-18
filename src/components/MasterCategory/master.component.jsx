@@ -13,7 +13,10 @@ import { Card } from "antd";
 
 // GraphQL Query
 import { useQuery } from "@apollo/client";
-import { GET_ALL_MASTER_CATEGORIES } from "../../GraphQL/Queries.js";
+import {
+  GET_ALL_MASTER_CATEGORIES,
+  GET_ALL_DATA,
+} from "../../GraphQL/Queries.js";
 
 const { Meta } = Card;
 
@@ -32,6 +35,12 @@ const styleTwo = {
 const MasterCategory = () => {
   const { loading, error, data } = useQuery(GET_ALL_MASTER_CATEGORIES);
 
+  const {
+    loading: allDataLoading,
+    error: allDataError,
+    data: allDataData,
+  } = useQuery(GET_ALL_DATA);
+
   // State for active element name
   const [activeElement, setActiveElement] = useState("");
 
@@ -45,16 +54,26 @@ const MasterCategory = () => {
   // Get all categories
   const renderAllCategories = () => {
     const array = [];
-
-    defaultItems.map((item) => {
-      return item.category.map((category) =>
-        array.push({
-          itemName: item.name,
+    // console.log(allDataData);
+    allDataData.master_categories.map((master) => {
+      master.categories.map((category) => {
+        return array.push({
           name: category.name,
-          rdmValue: category.rdmValue,
-          subCategory: category.subCategory,
-        })
-      );
+        });
+      });
+
+      //   return category.services.map((item) => {
+
+      //   });
+
+      //   return item.category.map((category) =>
+      //     array.push({
+      //       itemName: item.name,
+      //       name: category.name,
+      //       rdmValue: category.rdmValue,
+      //       subCategory: category.subCategory,
+      //     })
+      //   );
     });
     setCategoryName(array);
   };
@@ -77,113 +96,119 @@ const MasterCategory = () => {
   };
 
   useEffect(() => {
-    renderAllCategories();
-    setActiveElement("All");
-  }, []);
+    if (!loading && !allDataLoading) {
+      renderAllCategories();
+      setActiveElement("All");
+    }
+  }, [loading, allDataLoading]);
 
-  if (loading) return "Loading";
-  if (data)
-    return (
-      <div>
-        <Row style={style}>
-          {/* All Categories */}
-          <Col
-            span={3}
-            onClick={() => {
-              setActiveElement("All");
+  if (loading && allDataLoading) return "Loading";
 
-              renderAllCategories();
+  return (
+    <div>
+      <Row style={style}>
+        {/* All Categories */}
+        <Col
+          span={3}
+          onClick={() => {
+            setActiveElement("All");
 
-              setIsActiveAll(true);
-              setIsActiveOthers(false);
-              setIsActiveVaucher(false);
-            }}
+            renderAllCategories();
+
+            setIsActiveAll(true);
+            setIsActiveOthers(false);
+            setIsActiveVaucher(false);
+          }}
+        >
+          <Card
+            hoverable
+            style={{ width: 100, fontSize: 40, padding: "15px 0" }}
+            cover={<AppstoreOutlined />}
+            className={activeElement === "All" ? "active-element" : ""}
           >
-            <Card
-              hoverable
-              style={{ width: 100, fontSize: 40, padding: "15px 0" }}
-              cover={<AppstoreOutlined />}
-              className={activeElement === "All" ? "active-element" : ""}
+            <Meta
+              title="All"
+              style={{
+                padding: "10px 0",
+              }}
+            />
+          </Card>
+        </Col>
+
+        {/* Render Injectables, Face, Spa, Dematology, Acne treatment, and Hydrafacial categories */}
+        {data.master_categories.map((item) => {
+          return (
+            <Col
+              key={item.id}
+              span={3}
+              onClick={() => {
+                setActiveElement(item.name);
+                filterItems(item.name);
+
+                setIsActiveAll(false);
+                setIsActiveOthers(true);
+                setIsActiveVaucher(false);
+              }}
             >
-              <Meta
-                title="All"
-                style={{
-                  padding: "10px 0",
-                }}
-              />
-            </Card>
-          </Col>
-
-          {/* Render Injectables, Face, Spa, Dematology, Acne treatment, and Hydrafacial categories */}
-          {data.master_categories.map((item) => {
-            return (
-              <Col
-                key={item.id}
-                span={3}
-                onClick={() => {
-                  setActiveElement(item.name);
-                  filterItems(item.name);
-
-                  setIsActiveAll(false);
-                  setIsActiveOthers(true);
-                  setIsActiveVaucher(false);
-                }}
-              >
-                <Card
-                  hoverable
-                  style={{ width: 100, padding: "15px 0" }}
-                  cover={
-                      <img src={item.image} alt={item.name} style={{
-                          width: '40px',
-                          heigh: '40px',
-                          margin: '0 auto'
-                      }}/>
-                  }
-                  className={
-                    activeElement === item.name && isActiveOthers
-                      ? "active-element"
-                      : ""
-                  }
-                >
-                  <Meta
-                    title={item.name}
+              <Card
+                hoverable
+                style={{ width: 100, padding: "15px 0" }}
+                cover={
+                  <img
+                    src={item.image}
+                    alt={item.name}
                     style={{
-                      padding: "10px 0",
+                      width: "40px",
+                      heigh: "40px",
+                      margin: "0 auto",
                     }}
                   />
-                </Card>
-              </Col>
-            );
-          })}
+                }
+                className={
+                  activeElement === item.name && isActiveOthers
+                    ? "active-element"
+                    : ""
+                }
+              >
+                <Meta
+                  title={item.name}
+                  style={{
+                    padding: "10px 0",
+                  }}
+                />
+              </Card>
+            </Col>
+          );
+        })}
 
-          {/* Voucher Category */}
-          <Col span={3}>
-            <Card
-              hoverable
-              style={{ width: 100, fontSize: 40, padding: "15px 0" }}
-              cover={<CreditCardOutlined />}
-              className={isActiveVaucher ? "active-element" : ""}
-            >
-              <Meta
-                title="Voucher"
-                style={{
-                  padding: "10px 0",
-                }}
-              />
-            </Card>
-          </Col>
-        </Row>
+        {/* Voucher Category */}
+        <Col span={3}>
+          <Card
+            hoverable
+            style={{ width: 100, fontSize: 40, padding: "15px 0" }}
+            cover={<CreditCardOutlined />}
+            className={isActiveVaucher ? "active-element" : ""}
+          >
+            <Meta
+              title="Voucher"
+              style={{
+                padding: "10px 0",
+              }}
+            />
+          </Card>
+        </Col>
+      </Row>
 
-        {/* ScroolList component renders all categories depending of master category */}
-        <Row gutter={16}>
-          <Col span={24}>
-            <div style={styleTwo}>
-              <ScroolList data={categoryName} />
-            </div>
-          </Col>
-        </Row>
-      </div>
-    );
+      {/* ScroolList component renders all categories depending of master category */}
+      <Row gutter={16}>
+        <Col span={24}>
+          <div style={styleTwo}>
+            <ScroolList data={categoryName} />
+          </div>
+        </Col>
+      </Row>
+    </div>
+  );
 };
 
 export default MasterCategory;

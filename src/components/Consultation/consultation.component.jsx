@@ -6,11 +6,19 @@ import { useState } from 'react';
 import CounsultationCard from '../ConsultationCard/ConsultationCard.component';
 import { useEffect } from 'react/cjs/react.development';
 
+// GraphQL Query
+import { useQuery } from "@apollo/client";
+import { GET_SERVICES_BY_CATEGORY } from "../../GraphQL/Queries";
+
+
 const style = {
     textAlign: 'center'
 };
 
 const Consultation = ({ allData }) => {
+  const { loading, error, data } = useQuery(GET_SERVICES_BY_CATEGORY);
+
+
     // State that keep the data for in clinic and online services
     const [inClinic, setInClinic] = useState([])
     const [online, setOnline] = useState([])
@@ -27,7 +35,7 @@ const Consultation = ({ allData }) => {
         const onlineArr = []
 
         allData.map(item => {
-            if (item.online === true || item.online === undefined) {
+            if (item.in_clinic === false) {
                 onlineArr.push(item)
             }
         })
@@ -40,9 +48,9 @@ const Consultation = ({ allData }) => {
     // Filter for In Clinic filter (button)
     const handleClinic = () => {
         const clinicArr = []
-
+        console.log('handleClinic data', allData)
         allData.map(item => {
-            if (item.online === false || item.online === undefined) {
+            if (item.in_clinic === true) {
                 clinicArr.push(item)
             }
         })
@@ -55,10 +63,11 @@ const Consultation = ({ allData }) => {
 
     // Check if service is avaliable online
     const checkService = () => {
+
         allData.map(item => {
-            if (item.online === undefined) {
+          if (item.in_clinic === true) {
                 setIsCategoryVirtualAvaliable(false)
-            } else {
+            } else if(item.in_clinic === false){
                 setIsCategoryVirtualAvaliable(true)
             }
         })
@@ -72,7 +81,7 @@ const Consultation = ({ allData }) => {
 
     return (
         <>
-
+  {console.log(isCategoryVirtualAvaliable)}
             {/* Filter buttons In Clinic and Virtual Consultation */}
             <Row style={style}>
                 {
