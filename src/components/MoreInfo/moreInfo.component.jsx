@@ -15,7 +15,7 @@ const MoreInfo = () => {
                 }
                 onClick={() => setIsModalVisible(true)}
             />
-            {isModalVisible ? <MoreInfoModal isModalVisibleBool={isModalVisible}/> : 'MODAL IS NOT viSIble'}
+            {isModalVisible ? <MoreInfoModal isModalVisibleBool={isModalVisible}/> : ''}
         </>
     )
 }
