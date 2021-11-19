@@ -6,6 +6,8 @@ import ScroolList from "../List/scroolList.component";
 import { Row, Col } from "antd";
 import { AppstoreOutlined, CreditCardOutlined } from "@ant-design/icons";
 import { Card } from "antd";
+// Ant spinner
+import { Spin, Space } from "antd";
 
 // GraphQL Query
 import { useQuery } from "@apollo/client";
@@ -83,7 +85,14 @@ const MasterCategory = () => {
     }
   }, [loading, allDataLoading]);
 
-  if (loading && allDataLoading) return "Loading";
+  if (loading && allDataLoading)
+    return (
+      <Space size="middle">
+        <Spin size="small" />
+        <Spin />
+        <Spin size="large" />
+      </Space>
+    );
 
   return (
     <div>

@@ -22,6 +22,7 @@ const ScroolList = ({ data }) => {
 
   // Get consultation data
   const getConsultationData = (categoryName) => {
+  
     return servicesData.categories.map((category) => {
       if (category.name === categoryName) {
         setSelectedCategory(category.name);
@@ -36,7 +37,8 @@ const ScroolList = ({ data }) => {
 
   useEffect(() => {
     if (!loading) getConsultationData(selectedCategory);
-  }, [selectedCategory]);
+
+  }, [selectedCategory, loading]);
 
   return (
     <>
